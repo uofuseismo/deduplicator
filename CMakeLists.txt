@@ -19,7 +19,7 @@ set_target_properties(deduplicator PROPERTIES
                       CXX_STANDARD_REQUIRED YES 
                       CXX_EXTENSIONS NO) 
 target_include_directories(deduplicator PRIVATE ${CMAKE_SOURCE_DIR}/include Boost::program_options ${Earthworm_INCLUDE_DIR})
-target_link_libraries(deduplicator PRIVATE ${Earthworm_MT_LIBRARY} ${Earthworm_UTIL_LIBRARY} Boost::program_options)
+target_link_libraries(deduplicator PRIVATE ${Earthworm_MT_LIBRARY} ${Earthworm_UTIL_LIBRARY} Boost::program_options spdlog::spdlog_header_only)
 
 include(GNUInstallDirs)
 install(TARGETS deduplicator
