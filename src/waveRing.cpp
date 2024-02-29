@@ -24,6 +24,8 @@ extern "C"
 #include <deduplicator/waveRing.hpp>
 #include <deduplicator/traceBuf2.hpp>
 
+using namespace Deduplicator;
+
 namespace
 {
 /// This is klunky but effectively earthworm doesn't use const char * which
