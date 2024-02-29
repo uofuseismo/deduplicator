@@ -115,8 +115,11 @@ WaveRing::~WaveRing()
 void WaveRing::disconnect() noexcept
 {
 #ifdef WITH_EARTHWORM
-    spdlog::get("deduplicator")->info("Disconnecting from ring...");
-    if (pImpl->mHaveRegion){tport_detach(&pImpl->mRegion);}
+    if (pImpl->mHaveRegion)
+    {
+        spdlog::get("deduplicator")->info("Disconnecting from ring...");
+        tport_detach(&pImpl->mRegion);
+    }
     memset(&pImpl->mRegion, 0, sizeof(SHM_INFO));
     pImpl->mTraceBuf2Messages.clear();
     pImpl->mLogos.clear();
