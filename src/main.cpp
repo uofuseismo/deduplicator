@@ -294,6 +294,23 @@ int main(int argc, char *argv[])
         logger->set_level(spdlog::level::warn);
     }
     logger->info("Version: " + Deduplicator::Version::getVersion());
+    logger->info("Module Identifier: " + options.moduleName);
+    logger->info("Input ring: " + options.inputRingName);
+    logger->info("Output ring: " + options.outputRingName);
+    logger->info("Log directory: " + options.logDirectory.string());
+    logger->info("Maximum future time: "
+               + std::to_string(options.maxFutureTime.count()) + " seconds");
+    logger->info("Maximum past time: "
+               + std::to_string(options.maxPastTime.count()) + " seconds");
+    logger->info("Log bad data interval: "
+               + std::to_string(options.logBadDataInterval.count())
+               + " seconds");
+    logger->info("Approximate circular buffer duration: " 
+               + std::to_string(options.circularBufferDuration.count())
+               + " seconds");
+    logger->info("Approximate heartbeat interval: "
+               + std::to_string(options.heartbeatInterval.count()) + " seconds");
+
 
     // Create the rings
     Deduplicator::WaveRing inputWaveRing;
