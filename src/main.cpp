@@ -33,7 +33,8 @@ Allowed options)""");
         desc.add_options()
             ("help", "Produces this help message")
             ("ini",  boost::program_options::value<std::string> (),
-                     "Defines the initialization file for this executable");
+                     "Defines the initialization file for this executable")
+            ("version", "Displays the version number");
         boost::program_options::variables_map vm;
         boost::program_options::store(
             boost::program_options::parse_command_line(argc, argv, desc), vm);
@@ -41,6 +42,13 @@ Allowed options)""");
         if (vm.count("help"))
         {
             std::cout << desc << std::endl;
+            runProgram = false;
+            return;
+        }
+        if (vm.count("version"))
+        {
+            std::cout << Deduplicator::Version::getVersion() << std::endl;
+            runProgram = false;
             return;
         }
         if (vm.count("ini"))
@@ -150,6 +158,7 @@ Allowed options)""");
     std::chrono::seconds circularBufferDuration{3600};
     std::chrono::seconds heartbeatInterval{15};
     int verbosity{2};
+    bool runProgram{true};
 };
 
 struct TraceHeader
@@ -274,6 +283,7 @@ int main(int argc, char *argv[])
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
+    if (!options.runProgram){return EXIT_SUCCESS;}
 //return EXIT_SUCCESS;
     // Setup logger
     auto logger
