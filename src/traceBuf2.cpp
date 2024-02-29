@@ -65,7 +65,8 @@ std::string getDataFormat() noexcept
         }
         else
         {
-            std::cerr << "Unhandled little endian precision" << std::endl;
+            spdlog::get("deduplicator")->critical(
+                "Unhandled little endian precision");
 #ifndef NDEBUG
             assert(false);
 #endif
@@ -91,7 +92,8 @@ std::string getDataFormat() noexcept
         }
         else
         {
-            std::cerr << "Unhandled big endian precision" << std::endl;
+            spdlog::get("deduplicator")->critical(
+                "Unhandled big endian precision");
 #ifndef NDEBUG
             assert(false);
 #endif
@@ -99,7 +101,7 @@ std::string getDataFormat() noexcept
     }
     else
     {
-        std::cerr << "Mixed endianness is unhandled" << std::endl;
+        spdlog::get("deduplicator")->critical("Mixed endianness is unhandled");
 #ifndef NDEBUG
         assert(false);
 #endif
@@ -231,7 +233,8 @@ TraceBuf2 unpackEarthwormMessage(const char *message, const size_t messageLength
         nBytes = 2;
         if (dtype == 'f')
         {
-            std::cerr << "float16 unhandled" << std::endl;
+            spdlog::get("deduplicator")->critical(
+                "Unhandled float16");
 #ifndef NDEBUG
             assert(false);
 #endif
@@ -244,7 +247,8 @@ TraceBuf2 unpackEarthwormMessage(const char *message, const size_t messageLength
     }
     else
     {
-        std::cerr << "Unhandled number of bytes" << std::endl;
+        spdlog::get("deduplicator")->critical(
+             "Unhandled number of bytes");
 #ifndef NDEBUG
         assert(false);
 #endif
@@ -364,7 +368,6 @@ TraceBuf2 unpackEarthwormMessage(const char *message, const size_t messageLength
         }
         else
         {
-           std::cerr << "Can only process i or f datatype" << std::endl;
 #ifndef NDEBUG
            assert(false);
 #endif

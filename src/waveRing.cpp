@@ -455,7 +455,9 @@ void WaveRing::read()
                 }
                 catch (const std::exception &e)
                 {
-                    std::cerr << e.what() << std::endl;
+                    spdlog::get("deduplicator")->warn(
+                        "Failed to unpack message.  Failed with: "
+                      + std::string {e.what()});
                     continue;
                 }
             }
@@ -478,8 +480,8 @@ void WaveRing::read()
                                      pImpl->mMSEEDType);
     if (nMSEEDMessages > 0)
     {
-        std::cerr << 
-           "Need loop to unpack MSEED messages with msr_unpack" << std::endl;
+        spdlog::get("deduplicator")->error(
+            "Need loop to upnack MSEED messages with msr_unpack");
         for (int it = 0; it < static_cast<int> (messageWork.size()); ++it)
         {
             if (messageType[it] == pImpl->mMSEEDType)
