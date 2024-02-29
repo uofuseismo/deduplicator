@@ -1,12 +1,13 @@
-#ifndef URTS_BROADCASTS_EXTERNAL_EARTHWORM_TRACEBUF2_HPP
-#define URTS_BROADCASTS_EXTERNAL_EARTHWORM_TRACEBUF2_HPP
+#ifndef DEDUPLICATOR_TRACEBUF2_HPP
+#define DEDUPLICATOR_TRACEBUF2_HPP
 #include <memory>
 #include <vector>
 #include <string>
-/// @class TraceBuf2 "traceBuf2.hpp" "urts/broadcasts/external/earthworm/traceBuf2.hpp"
+namespace Deduplicator
+{
+/// @class TraceBuf2 "traceBuf2.hpp" "deduplicator/traceBuf2.hpp"
 /// @brief Defines an Earthworm tracebuf2 message format.
 /// @copyright Ben Baker (University of Utah) distributed under the MIT license.
-/// @ingroup Modules_Broadcasts_External_Earthworm_WaveRing
 class TraceBuf2
 {
 public:
@@ -196,4 +197,5 @@ private:
     class TraceBuf2Impl;
     std::unique_ptr<TraceBuf2Impl> pImpl;
 };
+}
 #endif

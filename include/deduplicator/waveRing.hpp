@@ -1,16 +1,19 @@
-#ifndef URTS_BROADCASTS_EXTERNAL_EARTHWORM_WAVE_RING_HPP
-#define URTS_BROADCASTS_EXTERNAL_EARTHWORM_WAVE_RING_HPP
+#ifndef DEDUPLICATOR_WAVE_RING_HPP
+#define DEDUPLICATOR_WAVE_RING_HPP
 #include <memory>
 #include <string>
 #include <vector>
 #include <exception>
-#include "traceBuf2.hpp"
-
+namespace Deduplicator
+{
+ class TraceBuf2;
+}
+namespace Deduplicator
+{
 class TerminateException : public std::exception
 { 
 private: 
     std::string message; 
-  
 public: 
     TerminateException(const std::string &msg) :
         message(msg)
@@ -22,7 +25,6 @@ public:
         : message(msg) 
     { 
     } 
-  
     // Override the what() method to return our message 
     const char* what() const throw() 
     { 
@@ -30,10 +32,10 @@ public:
     } 
 }; 
   
-/// @class WaveRing "waveRing.hpp" "urts/broadcasts/external/earthworm/waveRing.hpp"
-/// @brief A utility for reading traceBuf2 messages from an Earthworm wave ring.
+/// @class WaveRing "waveRing.hpp" "deduplicator/waveRing.hpp"
+/// @brief A utility for reading and writing traceBuf2 messages from an
+///        Earthworm wave ring as well as status messages.
 /// @copyright Ben Baker (University of Utah) distributed under the MIT license.
-/// @ingroup Modules_Broadcasts_External_Earthworm_WaveRing
 class WaveRing
 {
 public:
@@ -126,4 +128,5 @@ private:
     class WaveRingImpl;
     std::unique_ptr<WaveRingImpl> pImpl;
 };
+}
 #endif

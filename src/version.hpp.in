@@ -1,0 +1,54 @@
+#ifndef DEDUPLICATOR_VERSION_HPP
+#define DEDUPLICATOR_VERSION_HPP
+#include <string>
+#define DEDUPLICATOR_MAJOR @deduplicator_VERSION_MAJOR@
+#define DEDUPLICATOR_MINOR @deduplicator_VERSION_MINOR@
+#define DEDUPLICATOR_PATCH @deduplicator_VERSION_PATCH@
+#define DEDUPLICATOR_VERSION "@PROJECT_VERSION@"
+namespace Deduplicator
+{
+/// @class Version version.hpp "deduplciator/version.hpp"
+/// @brief Defines the deduplicator's version information.
+/// @copyright Ben Baker (University of Utah) distributed under the MIT license.
+class Version
+{
+public:
+    /// @result The API's major version number.
+    [[nodiscard]] static int getMajor() noexcept
+    {
+        return DEDUPLICATOR_MAJOR;
+    }
+    /// @result The API's minor version number.
+    [[nodiscard]] static int getMinor() noexcept
+    {
+        return DEDUPLICATOR_MINOR;
+    }
+    /// @result The API's patch version number.
+    [[nodiscard]] static int getPatch() noexcept
+    {
+        return DEDUPLICATOR_PATCH;
+    }
+    /// @result The full version number as a string, e.g., "1.2.3".
+    [[nodiscard]] static std::string getVersion() noexcept
+    {
+        return std::string {DEDUPLICATOR_VERSION};
+    }
+    /// @brief Determines if the version is greater than or equal to
+    ///        the current (major, minor, patch).
+    /// @param[in] major  The major version number.
+    /// @param[in] minor  The minor version number.
+    /// @param[in] patch  The patch number.
+    /// @result True indicates that the version is at least equal to the
+    ///         given major, minor, patch.
+    [[nodiscard]] static bool isAtLeast(int major, int minor, int patch) noexcept
+    {
+        if (DEDUPLICATOR_MAJOR < major){return false;}
+        if (DEDUPLICATOR_MAJOR > major){return true;}
+        if (DEDUPLICATOR_MINOR < minor){return false;}
+        if (DEDUPLICATOR_MINOR > minor){return true;}
+        if (DEDUPLICATOR_PATCH < patch){return false;}
+        return true;
+    }
+};
+}
+#endif

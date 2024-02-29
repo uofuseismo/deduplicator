@@ -13,6 +13,7 @@
 #include <boost/circular_buffer.hpp>
 #include <deduplicator/waveRing.hpp>
 #include <deduplicator/traceBuf2.hpp>
+#include "version.hpp"
 
 struct ProgramOptions
 {
@@ -154,7 +155,7 @@ Allowed options)""");
 struct TraceHeader
 {
     TraceHeader() = default;
-    explicit TraceHeader(const TraceBuf2 &traceBuf2) 
+    explicit TraceHeader(const Deduplicator::TraceBuf2 &traceBuf2) 
     {
         auto network = traceBuf2.getNetwork();
         auto station = traceBuf2.getStation(); 
@@ -248,7 +249,7 @@ bool operator<(const TraceHeader &lhs, const TraceHeader &rhs)
     return lhs.startTime < rhs.startTime;
 }
 
-std::string toName(const TraceBuf2 &traceBuf2Message)
+std::string toName(const Deduplicator::TraceBuf2 &traceBuf2Message)
 {
     auto traceName = traceBuf2Message.getNetwork() + "." 
                    + traceBuf2Message.getStation() + "." 
@@ -292,9 +293,10 @@ int main(int argc, char *argv[])
     {
         logger->set_level(spdlog::level::warn);
     }
-    
+    logger->info("Version: " + Deduplicator::Version::getVersion());
+
     // Create the rings
-    WaveRing inputWaveRing;
+    Deduplicator::WaveRing inputWaveRing;
     try
     {
         inputWaveRing.connect(options.inputRingName);
@@ -306,7 +308,7 @@ int main(int argc, char *argv[])
         logger->critical(e.what());
         return EXIT_FAILURE;
     }
-    WaveRing outputWaveRing; 
+    Deduplicator::WaveRing outputWaveRing; 
     try
     {
         outputWaveRing.connect(options.outputRingName,
@@ -334,7 +336,7 @@ int main(int argc, char *argv[])
         {
             inputWaveRing.read();
         }
-        catch (const TerminateException &e)
+        catch (const Deduplicator::TerminateException &e)
         {
             logger->info("Received terminate exception from ring: " 
                        + std::string {e.what()});
