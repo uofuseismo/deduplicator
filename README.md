@@ -53,7 +53,7 @@ Assuming the CMake configuration was successful descend into the build directory
 
 Provided the build was successful, you can install the executable (which by default will go to /usr/local/bin)
 
-   sudo make install
+    sudo make install
 
    
 
