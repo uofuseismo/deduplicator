@@ -1,6 +1,6 @@
 # About
 
-The data deuplicator copies from packets from one ring to another ring and in the process can do the following:
+The data deduplicator copies from packets from one ring to another ring and in the process can do the following:
 
   1.  Not pass duplicate packets.
   2.  Not pass old data.
@@ -55,6 +55,109 @@ Provided the build was successful, you can install the executable (which by defa
 
     sudo make install
 
-   
+# Setting Up Earthworm
+
+Now the executable is built you can use it in Earthworm.  To do this, first make sure there is a module identifier in the earthworm.d file.  For example:
+
+    Module   MOD_DEDUPLICATOR      160
+
+Next, make sure Earthworm's status manager knows about this application, so add its desc file (assuming this file is named deduplicator.desc) to the statmgr.d file
+
+    Descriptor deduplicator.desc
+
+Now, you can add this process as something to start/stop automatically.  To do this, in the startstop_unix.d file add the following
+
+    Process          "deduplicator --ini=deduplicator.ini"
+    Class/Priority   TS 0
+
+where the executable is deduplicator (it is assumed this is in a path that Earthworm can see - e.g., /usr/local/bin) and the initialization file is called deduplicator.ini.
+
+## The Desc File 
+
+These don't need to be too fancy.  You can probably get by with something like:
+
+    #
+    #          Descriptor File for the deduplicator module
+    #
+    #    This file specifies when error messages are to be reported via
+    #    email and pager.  All errors are logged in statmgr's daily log
+    #    files.  The name of this file must be entered in statmgr's
+    #    configuration file with a <Descriptor> command.
+    #    (example:  Descriptor "arc2trig.desc" )
+    #    The pager group name and a list of email recipients are listed
+    #    in statmgr's configuration file.
+    #
+    #    Comment lines in this file are preceded by #.
+    #
+    #    Parameters:
+    #
+    #    <modName> is a text string included in each reported error message.
+    #
+    #    <modId> is the module id number as specified in the file
+    #    earthworm.h.
+    #
+    #    <instId> is the installation id number as specified in the file
+    #    earthworm.h.
+    #
+    #
+    modName  deduplicator
+    modId    MOD_DEDUPLICATOR
+    instId   INST_UTAH
+    #
+    #
+    #    Heartbeat Specification.  If the status manager does not receive
+    #    a heartbeat message every <tsec> seconds from this module, an
+    #    error will be reported (client module dead).  <page> is the maximum
+    #    number of pager messages that will be reported and <mail> is the
+    #    maximum number of email messages that will be reported.  If the
+    #    page or mail limit is exceeded, no further errors will be reported
+    #    until the status manager is restarted.
+    #
+    tsec: 60  page: 0  mail: 0
+    #
+    #
+    # Uncomment the "restartMe" line to enable automatic restart of this
+    # process by statmgr/startstop.  statmgr will issue a TYPE_RESTART message
+    # for this process_id if it declares the patient dead.
+    #
+    restartMe
+
+## The Initialization File
+
+Next, we'll specify the initialization file.  Effectively, we will screen packets on the TEMP\_RING and pass `good' packets to the WAVE\_RING.
+
+    # Module Identifier for this instace of deduplicator.  This should match
+    # what is in earthworm.d.  The default is MOD_DEDUPLICATOR.
+    moduleIdentifier=MOD_DEDUPLICATOR
+    # Shared memory ring from which waveforms are read
+    inputRingName=TEMP_RING
+    # Shared memory ring to which waveforms are written
+    outputRingName=WAVE_RING
+    # Packets with ends time exceeding this many seconds from now into the future
+    # will be rejected.
+    maxFutureTime=0
+    # Packets with start times this many seconds before now will be rejected.
+    maxPastTime=1200
+    # Heartbeats will be written approximatly this many seconds
+    heartbeatInterval=30
+    # Each channel has a circular buffer that attemps to hold this duration 
+    # of (trace header) data in seconds.  Note, the heavy data isn't saved
+    # in memory so as to keep our memory footprint low.  This number should be
+    # larger than the maxPastTime.  That way, once each trace header's
+    # cache is full, very old data doesn't stand a chance at being
+    # evaluated. 
+    circularBufferDuration=3600
+    # Approximately, this many seconds the log file will contain a list of
+    # channels that were excluded because of duplication, future data,
+    # or expired data.
+    logBadDataInterval=3600
+    # The directory to which the log files will be written
+    logDirectory=/home/rt/ew/logs
+    # Verbosity
+    # 0 -> only (critical) error messages
+    # 1 -> warnings and (critical) error messages
+    # 2 -> information, warnings, and (critical) error messages
+    # 3 -> debug, information, warnings, and (critical) error messages
+    verbosity=2
 
    
