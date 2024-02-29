@@ -529,6 +529,7 @@ int main(int argc, char *argv[])
                     message = message + " " + expiredChannel;
                 }
                 logger->info(message);
+                logger->flush();
             }
             if (!futureChannels.empty())
             {
@@ -538,6 +539,7 @@ int main(int argc, char *argv[])
                     message = message + " " + futureChannel;
                 }
                 logger->info(message);
+                logger->flush();
             } 
             if (!duplicateChannels.empty())
             {
@@ -547,6 +549,7 @@ int main(int argc, char *argv[])
                     message = message + " " + duplicateChannel;
                 }
                 logger->info(message);
+                logger->flush();
             }
             // Reset for next interval
             logBadDataStartTime = now;
