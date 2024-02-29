@@ -24,9 +24,10 @@ The following prerequisites must be installed prior to compiling the software:
 
 After building and installing the prerequisites download the software
 
-   git clone git@github.com:uofuseismo/deduplicator.git
+   git clone https://github.com/uofuseismo/deduplicator.git
 
 ## Configuring CMake
 
 Next, configure cmake.  This is a system dependent activity but can look like the following:
 
+   
