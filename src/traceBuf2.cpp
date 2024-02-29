@@ -25,6 +25,8 @@
    #define CHA_LEN 3
    #define LOC_LEN 2
 #endif
+
+using namespace Deduplicator;
  
 namespace
 {
@@ -264,12 +266,12 @@ TraceBuf2 unpackEarthwormMessage(const char *message, const size_t messageLength
     if (!swap)
     {
         constexpr bool swapPass = false;
-        auto pinno        = unpack<int>(&message[0],      swapPass);
-        auto nsamp        = unpack<int>(&message[4],      swapPass);
-        auto startTime    = unpack<double>(&message[8],   swapPass);
-        //auto endTime    = unpack<double>(&message[16],  swapPass);
-        auto samplingRate = unpack<double>(&message[24],  swapPass);
-        auto quality      = unpack<int16_t>(&message[60], swapPass);
+        auto pinno        = ::unpack<int>(&message[0],      swapPass);
+        auto nsamp        = ::unpack<int>(&message[4],      swapPass);
+        auto startTime    = ::unpack<double>(&message[8],   swapPass);
+        //auto endTime    = ::unpack<double>(&message[16],  swapPass);
+        auto samplingRate = ::unpack<double>(&message[24],  swapPass);
+        auto quality      = ::unpack<int16_t>(&message[60], swapPass);
         result.setPinNumber(pinno);
         result.setStartTime(startTime);
         result.setSamplingRate(samplingRate);
@@ -475,7 +477,8 @@ TraceBuf2 &TraceBuf2::operator=(TraceBuf2 &&traceBuf2) noexcept
 /// Set the network name
 void TraceBuf2::setNetwork(const std::string &network) noexcept
 {
-    copyString(&pImpl->mNetwork, network, getMaximumNetworkLength());
+    ::copyString(&pImpl->mNetwork, network,
+                 TraceBuf2::getMaximumNetworkLength());
 }
 
 std::string TraceBuf2::getNetwork() const noexcept
@@ -483,7 +486,7 @@ std::string TraceBuf2::getNetwork() const noexcept
     return pImpl->mNetwork;
 }
 
-int TraceBuf2::getMaximumNetworkLength() const noexcept
+int TraceBuf2::getMaximumNetworkLength() noexcept
 {
     return NET_LEN;
 } 
@@ -491,7 +494,8 @@ int TraceBuf2::getMaximumNetworkLength() const noexcept
 /// Set the station name
 void TraceBuf2::setStation(const std::string &station) noexcept
 {
-    copyString(&pImpl->mStation, station, getMaximumStationLength());
+    ::copyString(&pImpl->mStation, station,
+                 TraceBuf2::getMaximumStationLength());
 }
 
 std::string TraceBuf2::getStation() const noexcept
@@ -499,7 +503,7 @@ std::string TraceBuf2::getStation() const noexcept
     return pImpl->mStation;
 }
 
-int TraceBuf2::getMaximumStationLength() const noexcept
+int TraceBuf2::getMaximumStationLength() noexcept
 {
     return STA_LEN;
 }
@@ -507,7 +511,8 @@ int TraceBuf2::getMaximumStationLength() const noexcept
 /// Set the channel name
 void TraceBuf2::setChannel(const std::string &channel) noexcept
 {
-    copyString(&pImpl->mChannel, channel, getMaximumChannelLength());
+    ::copyString(&pImpl->mChannel, channel,
+                 TraceBuf2::getMaximumChannelLength());
 }
 
 std::string TraceBuf2::getChannel() const noexcept
@@ -515,7 +520,7 @@ std::string TraceBuf2::getChannel() const noexcept
     return pImpl->mChannel;
 }
 
-int TraceBuf2::getMaximumChannelLength() const noexcept
+int TraceBuf2::getMaximumChannelLength() noexcept
 {
     return CHA_LEN;
 }
@@ -523,7 +528,8 @@ int TraceBuf2::getMaximumChannelLength() const noexcept
 /// Set the location code
 void TraceBuf2::setLocationCode(const std::string &location) noexcept
 {
-    copyString(&pImpl->mLocationCode, location, getMaximumLocationCodeLength());
+    ::copyString(&pImpl->mLocationCode, location,
+                 TraceBuf2::getMaximumLocationCodeLength());
 }
 
 std::string TraceBuf2::getLocationCode() const noexcept
@@ -531,7 +537,7 @@ std::string TraceBuf2::getLocationCode() const noexcept
     return pImpl->mLocationCode;
 }
 
-int TraceBuf2::getMaximumLocationCodeLength() const noexcept
+int TraceBuf2::getMaximumLocationCodeLength() noexcept
 {
     return LOC_LEN;
 }
