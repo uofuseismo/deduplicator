@@ -8,6 +8,7 @@
 #include <string>
 #include <cassert>
 #include <bit>
+#include <spdlog/spdlog.h>
 #include <deduplicator/traceBuf2.hpp>
 #ifdef WITH_EARTHWORM
    #include "trace_buf.h"
