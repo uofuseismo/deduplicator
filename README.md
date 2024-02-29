@@ -28,6 +28,33 @@ After building and installing the prerequisites download the software
 
 ## Configuring CMake
 
-Next, configure cmake.  This is a system dependent activity but can look like the following:
+Next, configure cmake.  If everything is in a standard location then this will be dead easy.  But, let's say libboost is in a strange spot, then a configuration script could look like this:
+
+    #!/usr/bin/bash
+    export CXX=/usr/bin/g++
+    export Boost_ROOT=${HOME}/boost_1_84_0/
+    BUILD_DIR=./build
+    if [ -d ${BUILD_DIR} ]; then
+       rm -rf ${BUILD_DIR}
+    fi
+    mkdir -p ${BUILD_DIR}
+    cd ${BUILD_DIR}
+    cmake .. \
+    -DCMAKE_CXX_COMPILER=${CXX}
+
+## Building the Code
+
+Assuming the CMake configuration was successful descend into the build directory, e.g.,
+
+    cd build
+    make
+
+## Installing the Code
+
+Provided the build was successful, you can install the executable (which by default will go to /usr/local/bin)
+
+   sudo make install
+
+   
 
    
